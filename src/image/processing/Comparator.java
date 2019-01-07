@@ -9,6 +9,9 @@ import java.io.IOException;
 
 import javax.swing.JFileChooser;
 
+import image.processing.operations.ContourOperation;
+import image.processing.operations.ImageOperation;
+
 public class Comparator {
 	private String pathFile;
 

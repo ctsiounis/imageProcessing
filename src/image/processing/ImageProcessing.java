@@ -9,6 +9,9 @@ import java.io.IOException;
 
 import javax.swing.JFileChooser;
 
+import image.processing.operations.ImageOperation;
+import image.processing.operations.OperationFactory;
+
 public class ImageProcessing {
 	private String pathFile;
 	private String outputDir;

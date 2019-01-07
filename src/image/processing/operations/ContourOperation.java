@@ -1,4 +1,4 @@
-package image.processing;
+package image.processing.operations;
 
 import java.awt.Color;
 
@@ -21,13 +21,39 @@ public class ContourOperation implements ImageOperation {
 			result[numOfRows - 1][i] = new Color(0, 0, 0);
 		}
 
-		double threshold = 0.5;
+		double threshold = 0.95;
+		double maxDistance = 3.0 * 255 * 255;
 
 		for (int i = 1; i < numOfRows - 1; i++)
 			for (int j = 1; j < numOfColumns - 1; j++) {
 				int resultColor = 0;
+				
+				Color pixel = imageArray[i][j];
+				Color n = imageArray[i - 1][j];
+				Color ne = imageArray[i - 1][j + 1];
+				Color e = imageArray[i][j + 1];
+				Color se = imageArray[i + 1][j + 1];
+				Color s = imageArray[i + 1][j];
+				Color sw = imageArray[i + 1][j - 1];
+				Color w = imageArray[i][j - 1];
+				Color nw = imageArray[i - 1][j - 1];
+				
+				
+				
+				if (	  ((colorDistance(pixel, n) / maxDistance) > 1 - threshold)
+						||((colorDistance(pixel, ne) / maxDistance) > 1 - threshold)
+						||((colorDistance(pixel, e) / maxDistance) > 1 - threshold)
+						||((colorDistance(pixel, se) / maxDistance) > 1 - threshold)
+						||((colorDistance(pixel, s) / maxDistance) > 1 - threshold)
+						||((colorDistance(pixel, sw) / maxDistance) > 1 - threshold)
+						||((colorDistance(pixel, w) / maxDistance) > 1 - threshold)
+						||((colorDistance(pixel, nw) / maxDistance) > 1 - threshold)) {
+					resultColor = 0;
+				} else {
+					resultColor = 255;
+				}
 
-				int color = imageArray[i][j].getRed();
+				/*int color = imageArray[i][j].getRed();
 				int n = imageArray[i - 1][j].getRed();
 				int ne = imageArray[i - 1][j + 1].getRed();
 				int e = imageArray[i][j + 1].getRed();
@@ -52,7 +78,7 @@ public class ContourOperation implements ImageOperation {
 						resultColor = 255;
 					}
 				else
-					resultColor = 255;
+					resultColor = 255;8?
 
 				/*
 				 * red = red & 0x000000FF; green = green & 0x000000FF; blue =
@@ -62,6 +88,22 @@ public class ContourOperation implements ImageOperation {
 				result[i][j] = new Color(resultColor, resultColor, resultColor);
 			}
 		return result;
+	}
+	
+	private double colorDistance (Color pixel, Color neighbor) {
+		int pixelRed = pixel.getRed();
+		int pixelGreen = pixel.getGreen();
+		int pixelBlue = pixel.getBlue();
+		
+		int neighborRed = neighbor.getRed();
+		int neighborGreen = neighbor.getGreen();
+		int neighborBlue = neighbor.getBlue();
+		
+		int colorDistance = (pixelRed - neighborRed)*(pixelRed - neighborRed) + 
+						 	(pixelGreen - neighborGreen)*(pixelGreen - neighborGreen) + 
+						 	(pixelBlue - neighborBlue)*(pixelBlue - neighborBlue);
+		
+		return colorDistance;
 	}
 
 }

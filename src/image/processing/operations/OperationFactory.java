@@ -1,4 +1,4 @@
-package image.processing;
+package image.processing.operations;
 
 public class OperationFactory {
 	public static ImageOperation create(String op) {
@@ -7,6 +7,10 @@ public class OperationFactory {
 			return new ContourOperation();
 		case "Inverse":
 			return new InverseOperation();
+		case "Thresholding":
+			return new ThresholdingOperation();
+		case "Adjustment":
+			return new AdjustmentOperation();
 		default:
 			return new IdentityOperation();
 		}

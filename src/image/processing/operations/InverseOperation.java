@@ -1,4 +1,4 @@
-package image.processing;
+package image.processing.operations;
 
 import java.awt.Color;
 
