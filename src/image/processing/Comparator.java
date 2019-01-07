@@ -30,7 +30,7 @@ public class Comparator {
 		System.out.println("Rerun specifying pathFile.");
 		return null;
 	}
-	
+
 	public boolean checkArguments(String[] args) {
 		if (args.length != 1) {
 			System.out.println("You can also use the program in the following format: java ImageProcessing pathFile");
@@ -44,53 +44,65 @@ public class Comparator {
 				pathFile = args[0];
 			}
 		}
-		 return true;
+		return true;
 	}
 
 	public boolean compare() {
-		
+
 		BufferedReader br;
 		try {
 			br = new BufferedReader(new FileReader(pathFile));
 			String line = null;
 			try {
 				while ((line = br.readLine()) != null) {
+					String[] parameters = line.split("\\s+");
+
+					Color[][] array;
 
 					ImageLoader loader = new ImageLoader();
-					boolean success = loader.loadImage(line);
+					boolean success = loader.loadImage(parameters[1]);
+
+					if ("Color".equals(parameters[0])) {
+						array = loader.getColorArray();
+					} else if ("Grayscale".equals(parameters[0])) {
+						array = loader.getGrayscaleArray();
+					} else {
+						System.out.println("Please provide Color or Grayscale in image: " + parameters[1]);
+						br.close();
+						return false;
+					}
 
 					if (success) {
-						// Color[][] colorArray = loader.getColorArray();
+						int numOfOperations = Integer.parseInt(parameters[2]);
+						for (int i = 1; i <= numOfOperations; i++) {
 
-						// ImageOperation operation = new InverseOperation();
-						// Color[][] result = operation.doOperation(colorArray);
+							ImageOperation studentOp = new ContourOperation();
+							Color[][] studentResult = studentOp.doOperation(array);
 
-						Color[][] grayArray = loader.getGrayscaleArray();
+							ImageOperation properOp = new ContourOperation();
+							Color[][] properResult = properOp.doOperation(array);
 
-						ImageOperation studentOp = new ContourOperation();
-						Color[][] studentResult = studentOp.doOperation(grayArray);
-						
-						ImageOperation properOp = new ContourOperation();
-						Color[][] properResult = properOp.doOperation(grayArray);
-						
-						double threshold = 0.1;
-						
-						int numOfRows = properResult.length;
-						int numOfColumns = properResult[0].length;
-						
-						for (int i = 1; i < numOfRows - 1; i++)
-							for (int j = 1; j < numOfColumns - 1; j++) {
-								Color student = studentResult[i][j];
-								Color proper = properResult[i][j];
-								
-								if (((Math.abs(proper.getRed() - student.getRed()) / (proper.getRed()*1.0)) > threshold)
-										|| ((Math.abs(proper.getBlue() - student.getBlue()) / (proper.getBlue()*1.0)) > threshold)
-										|| ((Math.abs(proper.getGreen() - student.getGreen()) / (proper.getGreen()*1.0)) > threshold))
-								{
-									br.close();
-									return false;
-								} 
-							}
+							double threshold = 0.1;
+
+							int numOfRows = properResult.length;
+							int numOfColumns = properResult[0].length;
+
+							for (int k = 1; i < numOfRows - 1; k++)
+								for (int j = 1; j < numOfColumns - 1; j++) {
+									Color student = studentResult[k][j];
+									Color proper = properResult[k][j];
+
+									if (((Math.abs(proper.getRed() - student.getRed())
+											/ (proper.getRed() * 1.0)) > threshold)
+											|| ((Math.abs(proper.getBlue() - student.getBlue())
+													/ (proper.getBlue() * 1.0)) > threshold)
+											|| ((Math.abs(proper.getGreen() - student.getGreen())
+													/ (proper.getGreen() * 1.0)) > threshold)) {
+										br.close();
+										return false;
+									}
+								}
+						}
 					}
 				}
 				br.close();

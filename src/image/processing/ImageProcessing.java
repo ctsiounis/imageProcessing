@@ -100,6 +100,7 @@ public class ImageProcessing {
 						array = loader.getGrayscaleArray();
 					} else {
 						System.out.println("Please provide Color or Grayscale in image: " + parameters[1]);
+						br.close();
 						return;
 					}
 					
