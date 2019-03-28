@@ -2,7 +2,7 @@ package image.processing.operations;
 
 import java.awt.Color;
 
-public class AdjustmentOperation implements ImageOperation {
+public class AdjustmentOperationProper implements ImageOperation {
 
 	@Override
 	public Color[][] doOperation(Color[][] imageArray) {
@@ -10,10 +10,10 @@ public class AdjustmentOperation implements ImageOperation {
 		int numOfColumns = imageArray[0].length;
 
 		Color[][] result = new Color[numOfRows][numOfColumns];
-		
+
 		int fixedX = 135;
 		int fixedY = 140;
-		
+
 		double adjustBrightness;
 		int newRed, newGreen, newBlue;
 		int maxDimension = Math.max(numOfRows, numOfColumns);
@@ -33,9 +33,9 @@ public class AdjustmentOperation implements ImageOperation {
 	}
 
 	private double findAdjustBrightness(int x, int y, int fixedX, int fixedY, int maxDimension) {
-		double distance = Math.sqrt((x - fixedX)*(x - fixedX) + (y - fixedY)*(y - fixedY));
-		double adjustBrightness = (maxDimension-distance)/maxDimension;
-		
+		double distance = Math.sqrt((x - fixedX) * (x - fixedX) + (y - fixedY) * (y - fixedY));
+		double adjustBrightness = (maxDimension - distance) / maxDimension;
+
 		return adjustBrightness;
 	}
 

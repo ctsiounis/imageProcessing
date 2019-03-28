@@ -2,7 +2,7 @@ package image.processing.operations;
 
 import java.awt.Color;
 
-public class ContourOperation implements ImageOperation {
+public class ContourOperationProper implements ImageOperation {
 
 	@Override
 	public Color[][] doOperation(Color[][] imageArray) {

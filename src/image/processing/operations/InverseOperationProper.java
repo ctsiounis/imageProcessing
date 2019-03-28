@@ -2,7 +2,7 @@ package image.processing.operations;
 
 import java.awt.Color;
 
-public class InverseOperation implements ImageOperation {
+public class InverseOperationProper implements ImageOperation {
 
 	@Override
 	public Color[][] doOperation(Color[][] imageArray) {

@@ -2,7 +2,7 @@ package image.processing.operations;
 
 import java.awt.Color;
 
-public class ThresholdingOperation implements ImageOperation {
+public class ThresholdingOperationProper implements ImageOperation {
 
 	@Override
 	public Color[][] doOperation(Color[][] imageArray) {

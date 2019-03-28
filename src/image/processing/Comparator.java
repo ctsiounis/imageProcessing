@@ -9,8 +9,10 @@ import java.io.IOException;
 
 import javax.swing.JFileChooser;
 
-import image.processing.operations.ContourOperation;
+import image.processing.operations.ContourOperationProper;
 import image.processing.operations.ImageOperation;
+import image.processing.operations.OperationFactory;
+import image.processing.operations.ProperOperationFactory;
 
 public class Comparator {
 	private String pathFile;
@@ -76,10 +78,10 @@ public class Comparator {
 						int numOfOperations = Integer.parseInt(parameters[2]);
 						for (int i = 1; i <= numOfOperations; i++) {
 
-							ImageOperation studentOp = new ContourOperation();
+							ImageOperation studentOp = OperationFactory.create(parameters[2+i]);
 							Color[][] studentResult = studentOp.doOperation(array);
 
-							ImageOperation properOp = new ContourOperation();
+							ImageOperation properOp = ProperOperationFactory.create(parameters[2+i]);
 							Color[][] properResult = properOp.doOperation(array);
 
 							double threshold = 0.1;
@@ -87,8 +89,8 @@ public class Comparator {
 							int numOfRows = properResult.length;
 							int numOfColumns = properResult[0].length;
 
-							for (int k = 1; i < numOfRows - 1; k++)
-								for (int j = 1; j < numOfColumns - 1; j++) {
+							for (int k = 0; i < numOfRows; k++)
+								for (int j = 0; j < numOfColumns; j++) {
 									Color student = studentResult[k][j];
 									Color proper = properResult[k][j];
 
